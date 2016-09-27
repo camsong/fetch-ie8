@@ -24,6 +24,11 @@ You'll also need a Promise polyfill for older browsers.
 $ npm install es6-promise
 ```
 
+Run this to polyfill the global environment at the beginning of your application.
+```js
+require('es6-promise').polyfill();
+```
+
 (For a node.js implementation, try [node-fetch](https://github.com/bitinn/node-fetch))
 
 ## Usage
