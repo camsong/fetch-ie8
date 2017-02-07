@@ -25,22 +25,22 @@
   }
 
   // simple polyfill string.trim
-  var trim
+  var trim;
   if (''.trim) {
     trim = function (str) {
-      return str.trim()
+      return str.trim();
     }
   } else {
     trim = function (str) {
-      return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '')
+      return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
     }
   }
 
-  // simple polyfill array.forEach
-  var forEach
-  if ([].forEach) {
+  // simple polyfill object.forEach
+  var forEach;
+  if (({}).forEach) {
     forEach = function (obj, func) {
-      return obj.forEach(func)
+      return obj.forEach(func);
     }
   } else {
     forEach = function (obj, func) {
@@ -104,7 +104,7 @@
   Headers.prototype.forEach = function(callback, thisArg) {
     for (var name in this.map) {
       if (Object.hasOwnProperty.call(this.map, name)) {
-          callback.call(thisArg, this.map[name], name, this)
+          callback.call(thisArg, this.map[name], name, this);
       }
     }
   }
@@ -133,13 +133,10 @@
     return fileReaderReady(reader)
   }
 
-  function readBlobAsText(blob, options) {
+  function readBlobAsText(blob) {
     var reader = new FileReader()
-    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : ''
-    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/
-    var _charset = blob.type.match(regex) || contentType.match(regex)
+    var _charset = blob.type.match(/charset\=[0-9a-zA-Z\-\_]*;?/)
     var args = [blob]
-
     if(_charset) {
       args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''))
     }
@@ -165,13 +162,12 @@
     this.bodyUsed = false
 
 
-    this._initBody = function(body, options) {
+    this._initBody = function(body) {
       this._bodyInit = body
       if (typeof body === 'string') {
         this._bodyText = body
       } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
         this._bodyBlob = body
-        this._options = options
       } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
         this._bodyFormData = body
       } else if (!body) {
@@ -211,7 +207,7 @@
         }
 
         if (this._bodyBlob) {
-          return readBlobAsText(this._bodyBlob, this._options)
+          return readBlobAsText(this._bodyBlob)
         } else if (this._bodyFormData) {
           throw new Error('could not read FormData body as text')
         } else {
@@ -284,7 +280,7 @@
     if ((this.method === 'GET' || this.method === 'HEAD') && body) {
       throw new TypeError('Body not allowed for GET or HEAD requests')
     }
-    this._initBody(body, options)
+    this._initBody(body)
   }
 
   Request.prototype.clone = function() {
@@ -323,7 +319,7 @@
       options = {}
     }
 
-    this._initBody(bodyInit, options)
+    this._initBody(bodyInit)
     this.type = 'default'
     this.status = options.status
     this.ok = this.status >= 200 && this.status < 300
@@ -448,6 +444,6 @@
 
   // Support CommonJS
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = self.fetch;
+    module.exports = fetch;
   }
 })();
