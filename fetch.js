@@ -1,4 +1,4 @@
-(function() {
+(function(self) {
   'use strict';
 
   // if __disableNativeFetch is set to true, the it will always polyfill fetch
@@ -415,4 +415,4 @@
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = self.fetch;
   }
-})();
+})(typeof self !== 'undefined' ? self : this);
