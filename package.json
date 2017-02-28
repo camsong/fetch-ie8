@@ -1,6 +1,6 @@
 {
   "name": "fetch-ie8",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "main": "fetch.js",
   "repository": "camsong/fetch",
   "license": "MIT",
